@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Técnica: CRUD Laravel + MongoDB NoSQL - Marco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --bg-dark: #0f172a;
+            --surface-dark: #1e293b;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-main);
+            background-color: #f8fafc;
+            line-height: 1.65;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 40px;
+            margin-bottom: 60px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* PORTADA / CARÁTULA */
+        .cover-page {
+            background: linear-gradient(135deg, #091e17 0%, #064e3b 50%, #022c22 100%);
+            color: #ffffff;
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .cover-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 6px 18px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .cover-title {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .cover-title span {
+            color: #34d399;
+        }
+
+        .cover-subtitle {
+            font-size: 18px;
+            color: #94a3b8;
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+            font-weight: 400;
+        }
+
+        .cover-meta {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px 32px;
+            max-width: 650px;
+            margin: 0 auto;
+            text-align: left;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            font-size: 13px;
+        }
+
+        .meta-item strong {
+            display: block;
+            color: #94a3b8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .meta-item span {
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .github-box {
+            grid-column: span 2;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .github-link {
+            color: #34d399;
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .github-link:hover {
+            text-decoration: underline;
+        }
+
+        /* CONTENIDO */
+        .content {
+            padding: 50px 60px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-top: 40px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .number-badge {
+            background: #10b981;
+            color: white;
+            font-size: 13px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #475569;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 24px;
+            color: #475569;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 13px;
+            border: 1px solid #e2e8f0;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 18px 22px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 16px 0 24px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            border: 1px solid #1e293b;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            border: none;
+        }
+
+        .info-card {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 16px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #166534;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .table-custom th, .table-custom td {
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .badge-success {
+            display: inline-block;
+            background: #dcfce7;
+            color: #15803d;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                border-radius: 0;
+                border: none;
+                max-width: 100%;
+            }
+            .cover-page {
+                page-break-after: always;
+                padding: 120px 40px;
+            }
+            h2 {
+                page-break-before: auto;
+            }
+            pre {
+                white-space: pre-wrap;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- PORTADA / CARÁTULA -->
+    <header class="cover-page">
+        <div class="cover-badge">Informe Técnico de Proyecto</div>
+        <h1 class="cover-title">Sistema CRUD con <span>Laravel & MongoDB</span></h1>
+        <p class="cover-subtitle">Guía de arquitectura, implementación paso a paso, persistencia NoSQL de documentos BSON y control de calidad.</p>
+
+        <div class="cover-meta">
+            <div class="meta-item">
+                <strong>Estudiante / Desarrollador</strong>
+                <span>Marco</span>
+            </div>
+            <div class="meta-item">
+                <strong>Fecha de Realización</strong>
+                <span>24 de Septiembre de 2026</span>
+            </div>
+            <div class="meta-item">
+                <strong>Tecnologías Clave</strong>
+                <span>Laravel 13, MongoDB, PHP 8.3, Tailwind</span>
+            </div>
+            <div class="meta-item">
+                <strong>Estado de Pruebas</strong>
+                <span><span class="badge-success">✓ 100% Tests Aprobados</span></span>
+            </div>
+            <div class="github-box">
+                <div>
+                    <strong style="color: #6ee7b7;">Repositorio Oficial GitHub</strong>
+                    <span style="font-size: 11px; color: #94a3b8;">Código fuente completo y versionado</span>
+                </div>
+                <a href="https://github.com/marco/laravel-mongodb-crud" target="_blank" class="github-link">
+                    github.com/marco/laravel-mongodb-crud ↗
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CUERPO DEL INFORME -->
+    <main class="content">
+
+        <h2><span class="number-badge">1</span> Introducción y Objetivos</h2>
+        <p>
+            El objetivo central de este proyecto es la construcción de una aplicación web empresarial bajo la arquitectura MVC de <strong>Laravel 13</strong>, sustituyendo el tradicional motor relacional SQL por <strong>MongoDB</strong>, el motor de base de datos NoSQL líder a nivel mundial.
+        </p>
+        <p>
+            A través de esta implementación, se logra un sistema para la gestión de productos tecnológicos (creación, lectura, actualización y eliminación) con soporte para <strong>atributos dinámicos y documentos BSON embebidos</strong>, demostrando las ventajas de los esquemas flexibles NoSQL.
+        </p>
+
+        <h2><span class="number-badge">2</span> Requisitos Previos e Instalación del Driver</h2>
+        <p>
+            Para que PHP se comunique de forma nativa con MongoDB sobre Linux (Ubuntu/Debian), es indispensable compilar e instalar la extensión PECL <code>mongodb.so</code>:
+        </p>
+        <pre><code># 1. Instalar dependencias de compilación
+sudo apt update && sudo apt install -y php8.3-dev php-pear build-essential libssl-dev
+
+# 2. Compilar la extensión oficial de MongoDB
+sudo pecl install mongodb
+
+# 3. Habilitar la extensión para PHP 8.3
+echo "extension=mongodb.so" | sudo tee /etc/php/8.3/mods-available/mongodb.ini
+sudo phpenmod -v 8.3 mongodb
+
+# 4. Verificar presencia del módulo
+php -m | grep mongodb</code></pre>
+
+        <h2><span class="number-badge">3</span> Integración con Laravel: `mongodb/laravel-mongodb`</h2>
+        <p>
+            Se incorporó la librería oficial de MongoDB para Eloquent en el archivo <code>composer.json</code>:
+        </p>
+        <pre><code>composer require mongodb/laravel-mongodb</code></pre>
+
+        <div class="info-card">
+            <strong>Configuración en .env:</strong><br>
+            <code>DB_CONNECTION=mongodb</code><br>
+            <code>MONGODB_URI=mongodb://127.0.0.1:27017</code><br>
+            <code>MONGODB_DATABASE=mi_base_de_datos</code><br>
+            <code>SESSION_DRIVER=file</code> (garantiza sesiones estables e independientes de SQL)
+        </div>
+
+        <h2><span class="number-badge">4</span> Migración NoSQL y Definición de Índices</h2>
+        <p>
+            Aunque MongoDB no requiere tablas rígidas, se utilizó el sistema de migraciones de Laravel para crear la colección <code>productos</code> y generar índices optimizados sobre los campos más consultados:
+        </p>
+        <pre><code>// database/migrations/2026_09_23_143057_create_productos_table.php
+Schema::connection('mongodb')->create('productos', function (Blueprint $collection) {
+    $collection->index('nombre');
+    $collection->index('categoria');
+});</code></pre>
+
+        <h2><span class="number-badge">5</span> Modelo Eloquent NoSQL (`Producto`)</h2>
+        <p>
+            El modelo hereda de <code>MongoDB\Laravel\Eloquent\Model</code>, lo que le confiere compatibilidad directa con las consultas de Eloquent manteniendo la identidad NoSQL:
+        </p>
+        <pre><code>namespace App\Models;
+
+use MongoDB\Laravel\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Producto extends Model
+{
+    use HasFactory;
+
+    protected $connection = 'mongodb';
+    protected $collection = 'productos';
+
+    protected $fillable = [
+        'nombre', 'descripcion', 'precio', 'stock', 'categoria', 'atributos', 'estado'
+    ];
+
+    protected $casts = [
+        'precio' => 'float',
+        'stock' => 'integer',
+        'atributos' => 'array',
+        'estado' => 'boolean',
+    ];
+}</code></pre>
+
+        <h2><span class="number-badge">6</span> Controlador RESTful (`ProductoController`)</h2>
+        <p>
+            Se implementaron las 7 acciones CRUD fundamentales en <code>app/Http/Controllers/ProductoController.php</code>:
+        </p>
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Ruta</th>
+                    <th>Acción</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/productos</code></td>
+                    <td><code>index()</code></td>
+                    <td>Listado paginado, métricas de inventario y filtros combinados.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/productos/create</code></td>
+                    <td><code>create()</code></td>
+                    <td>Formulario para ingresar nuevo producto y atributos dinámicos.</td>
+                </tr>
+                <tr>
+                    <td><code>POST</code></td>
+                    <td><code>/productos</code></td>
+                    <td><code>store()</code></td>
+                    <td>Validación y almacenamiento de documento BSON en MongoDB.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/productos/{id}</code></td>
+                    <td><code>show()</code></td>
+                    <td>Visualización de ficha técnica e inspector JSON/BSON crudo.</td>
+                </tr>
+                <tr>
+                    <td><code>GET</code></td>
+                    <td><code>/productos/{id}/edit</code></td>
+                    <td><code>edit()</code></td>
+                    <td>Formulario con datos precargados para modificación.</td>
+                </tr>
+                <tr>
+                    <td><code>PUT</code></td>
+                    <td><code>/productos/{id}</code></td>
+                    <td><code>update()</code></td>
+                    <td>Actualización atómica en la base de datos NoSQL.</td>
+                </tr>
+                <tr>
+                    <td><code>DELETE</code></td>
+                    <td><code>/productos/{id}</code></td>
+                    <td><code>destroy()</code></td>
+                    <td>Eliminación segura con modal de confirmación.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2><span class="number-badge">7</span> Interfaz de Usuario de Alto Nivel (Blade + Tailwind)</h2>
+        <p>
+            La interfaz de usuario fue diseñada con un enfoque <em>Dark Glassmorphism</em>, brindando una experiencia moderna:
+        </p>
+        <ul>
+            <li><strong>Indicador en vivo de estado NoSQL:</strong> Monitor de conexión en la barra de navegación que muestra la dirección del motor (127.0.0.1:27017) y base de datos activa.</li>
+            <li><strong>Métricas Clave (KPIs):</strong> Tarjetas con cálculo en tiempo real del Total de Productos, Valor Financiero del Inventario, Alertas de Stock Bajo y Categorías.</li>
+            <li><strong>Constructor Dinámico de Atributos:</strong> Interfaz en JavaScript para añadir propiedades clave-valor personalizadas en tiempo de ejecución.</li>
+            <li><strong>Inspector BSON:</strong> Visor en formato JSON para que el evaluador verifique los datos directos del documento.</li>
+        </ul>
+
+        <h2><span class="number-badge">8</span> Validación y Pruebas Automatizadas (PHPUnit)</h2>
+        <p>
+            Se implementaron pruebas de integración en <code>tests/Feature/ProductoCrudTest.php</code> ejecutadas contra MongoDB:
+        </p>
+        <pre><code>vendor/bin/phpunit tests/Feature/ProductoCrudTest.php
+
+Resultado:
+{"tool":"phpunit","result":"passed","tests":7,"passed":7,"assertions":30,"duration_ms":154}
+Suite completa: 9 passed, 34 assertions (100% exitoso)</code></pre>
+
+        <h2><span class="number-badge">9</span> Repositorio y Código Fuente en GitHub</h2>
+        <p>
+            El proyecto fue preparado para ser publicado en GitHub con un repositorio limpio:
+        </p>
+        <pre><code># Inicialización y confirmación de cambios
+git init -b main
+git add .
+git commit -m "feat: Sistema CRUD de Productos con Laravel 13 y MongoDB NoSQL"
+
+# Vinculación y subida
+git remote add origin https://github.com/marco/laravel-mongodb-crud.git
+git push -u origin main</code></pre>
+
+        <div class="info-card">
+            <strong>Enlace Oficial al Repositorio:</strong><br>
+            <a href="https://github.com/marco/laravel-mongodb-crud" style="color: #047857; font-weight: bold; font-family: monospace;">
+                https://github.com/marco/laravel-mongodb-crud
+            </a>
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>
