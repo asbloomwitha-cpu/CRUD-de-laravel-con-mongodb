@@ -12,7 +12,7 @@
 | **AUTOR / ESTUDIANTE** | **Marco** |
 | **TECNOLOGÍAS** | Laravel Framework 13, MongoDB Community 7+, PHP 8.3, Tailwind CSS |
 | **FECHA DE ENTREGA** | 24 de Septiembre de 2026 |
-| **ENLACE A GITHUB** | [https://github.com/marco/laravel-mongodb-crud](https://github.com/marco/laravel-mongodb-crud) *(Repositorio del Proyecto)* |
+| **ENLACE A GITHUB** | [https://github.com/asbloomwitha-cpu/CRUD-de-laravel-con-mongodb](https://github.com/asbloomwitha-cpu/CRUD-de-laravel-con-mongodb) *(Repositorio del Proyecto)* |
 | **ESTADO DEL PROYECTO** |  Completado al 100% (Pruebas unitarias y de integración aprobadas) |
 
 ---
